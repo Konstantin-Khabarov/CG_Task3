@@ -28,7 +28,7 @@ public class Model {
     public void calculateVertexNormals() {
         normals.clear(); // на случай если модель уже содержит записи о нормалях
 
-        calculatePolygonNormals();
+        calculatePolygonNormals(); // сначала надо посчитать нормали к полигонам
 
         // создаем нормали вершин ("пустые")
         for (int i = 0; i < vertices.size(); i++) {
