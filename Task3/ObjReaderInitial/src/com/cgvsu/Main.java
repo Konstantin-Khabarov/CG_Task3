@@ -2,6 +2,7 @@ package com.cgvsu;
 
 import com.cgvsu.math.Vector3f;
 import com.cgvsu.model.Model;
+import com.cgvsu.model.NormalsCalculation;
 import com.cgvsu.model.Polygon;
 import com.cgvsu.objreader.ObjReader;
 
@@ -14,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Path fileName = Path.of("3DModels/Faceform/WrapBody.obj");
+        Path fileName = Path.of("3DModels/SimpleModelsForReaderTests/TeapotHoudini.obj");
         String fileContent = Files.readString(fileName);
 
         System.out.println("Loading model ...");
@@ -34,17 +35,18 @@ public class Main {
 
         ArrayList<Vector3f> originalNormals = new ArrayList<>(model.normals);
         System.out.println("---");
-        model.calculateVertexNormals();
+        NormalsCalculation.calculateVertexNormals(model);
         // просмотр всех посчитанных нормалей полигонов (для отладки)
         /*for (Polygon polygon : model.polygons){
             System.out.println(polygon.getNormal().getX() +" "+polygon.getNormal().getY() + " "+polygon.getNormal().getZ());
         }*/
         System.out.println("Normals (calculated): " + model.normals.size());
-        System.out.println("All Calculated Normals:");
+        System.out.println("All <Calculated Normals> --> <Original Normals>   <isEqual>");
         if (!originalNormals.isEmpty()) {
             // проверка на совпадение с изначальными координатами нормалей вершин (если они были в файле)
             for (int i = 0; i < model.normals.size(); i++) {
-                System.out.print(model.normals.get(i).getX() + " " + model.normals.get(i).getY() + " " + model.normals.get(i).getZ() + " --> ");
+                System.out.print(model.normals.get(i).getX() + " " + model.normals.get(i).getY() + " " + model.normals.get(i).getZ() + " --> "
+                + originalNormals.get(i).getX() + " " + originalNormals.get(i).getY() + " " + originalNormals.get(i).getZ() + "   ");
                 System.out.println(originalNormals.get(i).equals(model.normals.get(i)));
             }
         } else {

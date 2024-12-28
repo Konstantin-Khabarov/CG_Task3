@@ -3,7 +3,7 @@ package com.cgvsu.math;
 // Это заготовка для собственной библиотеки для работы с линейной алгеброй
 public class Vector3f {
     float x, y, z;
-    final float eps = 1e-2f;
+    final float eps = 1e-1f;
 
     public Vector3f(float x, float y, float z) {
         this.x = x;
@@ -26,7 +26,7 @@ public class Vector3f {
     }
 
     // Возвращает вектор, перпендикулярный двум переданным (векторное произведение)
-    public Vector3f cross(Vector3f v1, Vector3f v2) {
+    public static Vector3f cross(Vector3f v1, Vector3f v2) {
         float vNormalX = (v1.y * v2.z) - (v1.z * v2.y);
         float vNormalY = (v1.z * v2.x) - (v1.x * v2.z);
         float vNormalZ = (v1.x * v2.y) - (v1.y * v2.x);
@@ -34,7 +34,7 @@ public class Vector3f {
     }
 
     // Возвращает вектор между 2мя точками
-    public Vector3f vector(Vector3f point1, Vector3f point2) {
+    public static Vector3f vector(Vector3f point1, Vector3f point2) {
         float vectorX = point1.x - point2.x;
         float vectorY = point1.y - point2.y;
         float vectorZ = point1.z - point2.z;
@@ -47,7 +47,8 @@ public class Vector3f {
     }
 
     // Возвращает нормализованный вектор (с длиной 1)
-    public void normalize(Vector3f v) {
+    public void normalize() {
+        Vector3f v = this;
         float magnitude = magnitude(v);
         v.x /= magnitude;
         v.y /= magnitude;
@@ -55,12 +56,12 @@ public class Vector3f {
     }
 
     // Возвращает нормаль полигона
-    public Vector3f normalPolygon(Vector3f v0, Vector3f v1, Vector3f v2) {
+    public static Vector3f normalPolygon(Vector3f v0, Vector3f v1, Vector3f v2) {
         Vector3f newV1 = vector(v1, v0);
         Vector3f newV2 = vector(v2, v0);
 
         Vector3f vNormal = cross(newV1, newV2);
-        normalize(vNormal);
+        vNormal.normalize();
         return vNormal;
     }
 

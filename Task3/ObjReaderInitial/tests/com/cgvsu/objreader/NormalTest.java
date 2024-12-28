@@ -2,6 +2,7 @@ package com.cgvsu.objreader;
 
 import com.cgvsu.math.Vector3f;
 import com.cgvsu.model.Model;
+import com.cgvsu.model.NormalsCalculation;
 import com.cgvsu.model.Polygon;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class NormalTest {
         model.polygons.add(new Polygon());
         model.polygons.get(0).setVertexIndices(vertexIndices);
 
-        model.calculateVertexNormals();
+        NormalsCalculation.calculateVertexNormals(model);
 
         Vector3f normal0 = model.normals.get(0);
         Vector3f normal1 = model.normals.get(1);
