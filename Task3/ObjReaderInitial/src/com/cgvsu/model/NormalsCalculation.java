@@ -6,13 +6,10 @@ import java.util.ArrayList;
 
 public class NormalsCalculation {
 
-    // Список для хранения нормалей полигонов
-    private static ArrayList<Vector3f> polygonNormals;
-
     // метод для расчета нормалей к полигонам
-    public static void calculatePolygonNormals(Model model) {
+    private static ArrayList<Vector3f> calculatePolygonNormals(Model model) {
         ArrayList<Polygon> polygons = model.polygons;
-        polygonNormals = new ArrayList<>(polygons.size());
+        ArrayList<Vector3f> polygonNormals = new ArrayList<>(polygons.size());
 
         for (int i = 0; i < polygons.size(); i++) {
             Polygon polygon = polygons.get(i);
@@ -22,13 +19,14 @@ public class NormalsCalculation {
 
             polygonNormals.add(Vector3f.normalPolygon(v0, v1, v2));
         }
+        return polygonNormals;
     }
 
-    // метод для расчета нормалей к вершинам.
+    // метод для расчета нормалей к вершинам
     public static void calculateVertexNormals(Model model) {
         model.normals.clear(); // на случай если модель уже содержит записи о нормалях
 
-        calculatePolygonNormals(model); // сначала надо посчитать нормали к полигонам
+        ArrayList<Vector3f> polygonNormals = calculatePolygonNormals(model); // сначала надо посчитать нормали к полигонам
 
         // создаем нормали вершин ("пустые")
         for (int i = 0; i < model.vertices.size(); i++) {
@@ -42,7 +40,8 @@ public class NormalsCalculation {
             Vector3f polygonNormal = polygonNormals.get(i);
 
             for (int vertexIndex : polygon.getVertexIndices()) {
-                model.normals.set(vertexIndex, model.normals.get(vertexIndex).add(polygonNormal));
+                model.normals.get(vertexIndex).add(polygonNormal);
+                model.normals.set(vertexIndex, model.normals.get(vertexIndex));
                 polygonsToVertexCount[vertexIndex]++;
             }
         }
@@ -54,7 +53,9 @@ public class NormalsCalculation {
                 normal = normal.divide(polygonsToVertexCount[i]);
             }
             normal.normalize();
+            normal.shortenTo4();
             model.normals.set(i, normal);
         }
+
     }
 }

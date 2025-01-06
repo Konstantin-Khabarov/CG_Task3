@@ -16,8 +16,10 @@ public class Vector3f {
     }
 
     // Сложение векторов
-    public Vector3f add(Vector3f v) {
-        return new Vector3f(x + v.x, y + v.y, z + v.z);
+    public void add(Vector3f v) {
+        this.x += v.getX();
+        this.y += v.getY();
+        this.z += v.getZ();
     }
 
     // Деление вектора на скаляр
@@ -63,6 +65,14 @@ public class Vector3f {
         Vector3f vNormal = cross(newV1, newV2);
         vNormal.normalize();
         return vNormal;
+    }
+
+    // Укорачивает значения координат вектора до 4 знаков после запятой
+    public void shortenTo4 (){
+        float scale = (float) Math.pow(10, 4); // 10^4 для 4 знаков после запятой
+        x = Math.round(x * scale) / scale;
+        y = Math.round(y * scale) / scale;
+        z = Math.round(z * scale) / scale;
     }
 
     public float getX() {
